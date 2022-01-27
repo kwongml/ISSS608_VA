@@ -21,3 +21,4 @@ navbar:
       - text: "Dataviz 2"
         href: Dataviz2.html
 output: distill::distill_article
+
