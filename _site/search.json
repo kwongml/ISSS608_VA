@@ -1,0 +1,21 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "About this site",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2022-01-28T01:54:59+08:00"
+    },
+    {
+      "path": "index.html",
+      "title": "Visual Analytics",
+      "description": "This website consists of a collection of works done for ISSS608 Visual Analytics and Applications.\n",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2022-01-28T01:54:59+08:00"
+    }
+  ],
+  "collections": []
+}
