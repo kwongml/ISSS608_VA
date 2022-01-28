@@ -33,9 +33,9 @@ The *superstore-2021* dataset is used in this example, which comprise three work
 
 Referencing the initial guide, the code chunk below was used to import the necessary packages to create the visualisation.
 
-```{r}
+```{r ,echo = TRUE}
 
-packages = c('tidyverse', 'readxl', 'knitr')
+packages = c('tidyverse', 'readxl', 'knitr','scales')
 
 for(p in packages){
   if(!require(p, character.only = T)){
@@ -48,7 +48,7 @@ for(p in packages){
 
 The code chunk below was used to import the *superstore-2021.xls* into R by using the read_csv() function of the **readr** package. 
 
-```{r}
+```{r ,echo = TRUE}
 orders <- read_xls("data/Superstore-2021.xls",
                   sheet = "Orders")
 returns <- read_xls("data/Superstore-2021.xls",
@@ -60,71 +60,158 @@ returns <- read_xls("data/Superstore-2021.xls",
 Steps were taken using the [guide](https://r4dsa.netlify.app/posts/2022-01-23-creating-a-pareto-chart-using-ggplot/) to:
 
 + join the two data frames through a left join
-+ computer the frequency count by sub-category
++ compute the frequency count by sub-category
 + sort the data by descending returns
-+ computing the cumulative frequency
++ compute the cumulative frequency
 
-### Joining the two data frames
+### 2.2.1 Joining the two data frames
 
-```{r}
+```{r ,echo = TRUE}
 joined_tab <- left_join(returns, orders,
                         by = c('Order ID' = 'Order ID'))
 
 ```
-### Getting the frequency count through count method
+### 2.2.2 Getting the frequency count through count method
 
-```{r}
+```{r ,echo = TRUE}
 freq_returned <- joined_tab %>% 
   count(`Sub-Category`) %>%
   rename(Returns = n)
 ```
 
-### Computing the cumulative frequency
+### 2.2.3 Computing the cumulative frequency
 
-```{r}
+```{r ,echo = TRUE}
 freq_sorted <- freq_returned %>%
   arrange(desc(Returns)) %>%
   mutate(
-    cumulative = cumsum(Returns) / sum(Returns)*100
+    cumulative = cumsum(Returns)
   )
+freq_sorted$`Sub-Category` <- factor(freq_sorted$`Sub-Category`, levels=freq_sorted$`Sub-Category`)
+```
 
-names(freq_sorted)[names(freq_sorted) == 'Sub-Category'] <- 'SubCategory' 
-freq_sorted$SubCategory <- factor(freq_sorted$SubCategory, levels=freq_sorted$SubCategory)
+
+## 2.3 Visualisation
+
+The rationale for each package/function and their use in the visualisation of the pareto chart are as follows:
+
++ **geom_bar**: makes the height of the bar proportional to the number of cases in each group
++ **geom_line**: connects the dots in order of the variable on the x axis.
++ **scale_x_discrete**: used to scale the x-axis fitting a discrete variable
++ **scale_y_continuous**: default continous position scales
++ **sec_axis**: used to create a secondary axis to mark the cumulative percentages in the graph
++ aesthetic components such as graph title, axis labels etc.
+
+```{r ,echo = TRUE}
+# Scale factor for utilising whole y-axis range
+scalef <- max(freq_sorted$cumulative) 
+
+ggplot(freq_sorted, aes(x=freq_sorted$"Sub-Category")) +
+geom_bar(aes(y=freq_sorted$Returns), fill='lightblue', stat="identity") +
+geom_point(aes(y=freq_sorted$cumulative), color = 'black', pch=16, size=1) +
+geom_line(aes(y=freq_sorted$cumulative, group=1), colour="black", lty=3, size=0.9)+
+  scale_x_discrete(name = "Sub-Category") +
+  scale_y_continuous(
+    
+    # Features of the first axis
+    name = "Count of Returns",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(trans=~./scalef, labels = percent_format(), name="Percentage of Running Total of Count of Returns")) + theme(axis.text.x = element_text(angle=90, vjust=0.6)) + labs(title = 'Pareto chart of the Distribution of Returns by Product Sub-category')
+```
+## 2.4 Evaluation
+
+### 2.4.1 LEVEL OF CUSTOMISATION AND EASE OF USE
+
+Compared with **Tableau**, **RMarkdown** allows one more control over the level of customisations in regards to the aesthetic labelling, as well as the ability to layer over multiple type of charts on a single axes.
+
+The downside of using **RMarkdown** is that it requires some level of knowledge in regards to *ggplot*, and having to individually layer each type of plot (i.e. the current plot is an overlay of a bar plot and a line plot) which can be tedious.
+
+Given the use of *ggplot()* in **Rmarkdown** allows for more control, and level of customisation, the *Pareto Chart* produced using R is slightly clearer than when using Tableau.
+
+### 2.4.2 CLARITY AND AESTHETIC
+
+For the same reasons in which the *ggplot2* package allows for more control, the result is a visual that is clearer and more aesthetic as the user can fine-tune the aesthetic labelling more easily. The *Pareto Chart* produced using ggplot on the **R** interface is also clearer than **Tableau** given that there are more options for aesthetic labelling.
+
+
+# 3.0 Age-Sex Pyramid
+
+## 3.1 Data Import
+
+Data was taken from the [Department of Statistics](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data) titled *Singapore Residents by Planning Area/ Subzone, Age Group, Sex and Type of Dwelling, June 2021*.
+
+The code chunk below was used to import the necessary packages to create the visualisation.
+
+```{r ,echo = TRUE}
+
+packages = c('tidyverse', 'readr', 'knitr','ggplot2')
+
+for(p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
 
 ```
 
 
-### Visualisation
+## 3.1 Data Import
 
-```{r}
-ggplot(freq_sorted, aes(x=freq_sorted$SubCategory)) + 
-  geom_bar(aes(y=freq_sorted$Returns), fill='blue', stat="identity") +
-  geom_point(aes(y=freq_sorted$cumulative), color = rgb(0, 1, 0), pch=16, size=1) +
-  geom_path(aes(y=freq_sorted$cumulative, group=1), colour="slateblue1", lty=3, size=0.9) +
-  theme(axis.text.x = element_text(angle=90, vjust=0.6)) +
-  labs(title = "Pareto Plot", subtitle = "Produced by Gary Hutson", x = 'UK Cities', y = 'Count')
+The *read_csv* function was used over the *read.csv* as the *read_csv* function imports data into R as a tibble, instead of an old R data frame. Tibbles are better as they load faster.
+
+
+```{r ,echo = TRUE}
+df <- read_csv("data/respopagesextod2021.csv")
 ```
 
-```{r}
-ggplot(freq_sorted, aes(x=SubCategory)) +  theme_bw(base_size = 12)+
-  geom_bar(aes(y=Returns, fill=SubCategory), stat="identity",show.legend = FALSE) +
-  geom_path(aes(y=cumulative, group=1),colour="red", size=0.9) +
-  geom_point(aes(y=cumulative, group=1),colour="red") +
-  scale_y_continuous("Counts", sec.axis = sec_axis(~.), n.breaks = 9) +
-  scale_fill_grey() +
-  theme(
-    axis.text = element_text(size=12),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.title.x=element_blank()
-  )
+
+## 3.2 Data Wrangling
+
+The *Age* variable, named = "AG", was factorized and ordered to better fit the visualisation.
+
+```{r, , echo = TRUE}
+df$AG <- factor(df$AG, levels = unique(df$AG), ordered = TRUE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web. 
+## 3.3 Visualisation
 
-Learn more about using Distill for R Markdown at <https://rstudio.github.io/distill>.
+The rationale for each package/function and their use in the visualisation of the *age-sex population pyramid* are as follows:
+
++ **number_ticks**: a function was created to set breaks in the axis which would be used further in the code chunk
++ **scale_x_continuous**: default continous position scales, customised with set number of breaks
++ aesthetic components such as graph title, axis labels etc.
+
+```{r, echo = TRUE}
+
+#creating a function to create breaks 
+number_ticks <- function(n) {function(limits) pretty(limits, n)}
+ggplot(df, 
+       mapping = aes(x = ifelse(test = Sex == "Males", yes = -Pop, no = Pop), 
+                     y = AG, fill = Sex)) +
+  geom_col() +
+  scale_x_continuous(breaks=number_ticks(10))+
+labs(x='Population Count', y = 'Age Range',
+title = 'Age-Sex Pyramid of Singapore', caption = 'Data Source: Department of Statistics (June 2021)')
+```
+
+## 3.4 Evaluation
+
+### 3.4.1 LEVEL OF CUSTOMISATION AND EASE OF USE
+
+Similar to the *Pareto Chart*, the use of *ggplot()* in **RMarkdown** to create the *age-sex population pyramid* was far easier than when using **Tableau**. For the same chart to be created in **Tableau**, one has to work around the interface and create additional measures in order to separate the counts of individual genders (i.e. male and female) in addition to flipping the axis. By contrast, the use of R *ggplot* and a few lines of code allows one to create the same graph with a higher degree of control.
+
+**R** also allows for more customisation in terms of aesthetic labelling through the addition of captions, and sub-titlings for added detail.
 
 
+### 3.4.2 CLARITY AND AESTHETIC
+Similarly to the *Pareto Chart*, as the *ggplot2* package allows for more control, the result is a visual that is clearer and more aesthetic as the user can fine-tune the aesthetic labelling more easily. 
 
+# 4. Conclusion
+
+Both **Tableau** and **RMarkdown** are great visual tools, both with its advantages. **Tableau** is an easy interface that allows users to upload a single flat-file easily by means of drag-and-drop, allowing users to create quick visuals.
+
+On the other hand, the use of **RMarkdown** requires some level of R programming knowledge to be able to deftly use the packages (e.g. *ggplot2*, *tidyverse* etc.) to wrangle with the data and manipulate it to suit one's analysis needs. That said, it allows for a higher level of control, without the need to create multiple dimensions/measures such as in Tableau, as well as allowing for a user to create highly specific charts which are less generic alongside more opportunities for aesthetic labelling.
+
+----End of Take-Home Exercise 1----
 
 
