@@ -1,5 +1,5 @@
 ---
-title: "Take-home Exercise 1"
+title: "Take-Home Exercise 1"
 description: |
   The objective of this take-home exercise is to practice producing robust documentation for reproducible data.
 author:
