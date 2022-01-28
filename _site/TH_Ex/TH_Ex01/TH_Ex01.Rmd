@@ -1,0 +1,130 @@
+---
+title: "Take-home Exercise 1"
+description: |
+  The objective of this take-home exercise is to practice producing robust documentation for reproducible data.
+author:
+  - name: M.L. Kwong 
+    url: https://scis.smu.edu.sg/master-it-business
+    affiliation: MITB (Analytics)
+    affiliation_url: https://scis.smu.edu.sg/
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1.0 Overview
+
+In this take-home exercise, we aim to apply the appropriate packages to create suitable data visualisations using ggplot2. The two main visualisations we will be covering include:
+
++ A **pareto chart** showing the distribution of returns by product sub-category using the *superstore-2021.xls* file.
+
++ A **age-sex pyramid** showing the demographic structure of Singapore by age cohort and gender, using the *Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2021* from [Department of Statistics](https://www.singstat.gov.sg/).
+
+Steps taken towards data preparation, choice of packages and findings will be documented, and outlined in separate sections for each visualisation.
+
+# 2.0 Pareto Chart
+
+## 2.1 Data Import
+
+The *superstore-2021* dataset is used in this example, which comprise three worksheets: Orders, People and Returns. 
+
+Referencing the initial guide, the code chunk below was used to import the necessary packages to create the visualisation.
+
+```{r}
+
+packages = c('tidyverse', 'readxl', 'knitr')
+
+for(p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+
+```
+
+The code chunk below was used to import the *superstore-2021.xls* into R by using the read_csv() function of the **readr** package. 
+
+```{r}
+orders <- read_xls("data/Superstore-2021.xls",
+                  sheet = "Orders")
+returns <- read_xls("data/Superstore-2021.xls",
+                  sheet = "Returns")
+```
+
+## 2.2 Data Wrangling
+
+Steps were taken using the [guide](https://r4dsa.netlify.app/posts/2022-01-23-creating-a-pareto-chart-using-ggplot/) to:
+
++ join the two data frames through a left join
++ computer the frequency count by sub-category
++ sort the data by descending returns
++ computing the cumulative frequency
+
+### Joining the two data frames
+
+```{r}
+joined_tab <- left_join(returns, orders,
+                        by = c('Order ID' = 'Order ID'))
+
+```
+### Getting the frequency count through count method
+
+```{r}
+freq_returned <- joined_tab %>% 
+  count(`Sub-Category`) %>%
+  rename(Returns = n)
+```
+
+### Computing the cumulative frequency
+
+```{r}
+freq_sorted <- freq_returned %>%
+  arrange(desc(Returns)) %>%
+  mutate(
+    cumulative = cumsum(Returns) / sum(Returns)*100
+  )
+
+names(freq_sorted)[names(freq_sorted) == 'Sub-Category'] <- 'SubCategory' 
+freq_sorted$SubCategory <- factor(freq_sorted$SubCategory, levels=freq_sorted$SubCategory)
+
+```
+
+
+### Visualisation
+
+```{r}
+ggplot(freq_sorted, aes(x=freq_sorted$SubCategory)) + 
+  geom_bar(aes(y=freq_sorted$Returns), fill='blue', stat="identity") +
+  geom_point(aes(y=freq_sorted$cumulative), color = rgb(0, 1, 0), pch=16, size=1) +
+  geom_path(aes(y=freq_sorted$cumulative, group=1), colour="slateblue1", lty=3, size=0.9) +
+  theme(axis.text.x = element_text(angle=90, vjust=0.6)) +
+  labs(title = "Pareto Plot", subtitle = "Produced by Gary Hutson", x = 'UK Cities', y = 'Count')
+```
+
+```{r}
+ggplot(freq_sorted, aes(x=SubCategory)) +  theme_bw(base_size = 12)+
+  geom_bar(aes(y=Returns, fill=SubCategory), stat="identity",show.legend = FALSE) +
+  geom_path(aes(y=cumulative, group=1),colour="red", size=0.9) +
+  geom_point(aes(y=cumulative, group=1),colour="red") +
+  scale_y_continuous("Counts", sec.axis = sec_axis(~.), n.breaks = 9) +
+  scale_fill_grey() +
+  theme(
+    axis.text = element_text(size=12),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.title.x=element_blank()
+  )
+```
+
+Distill is a publication format for scientific and technical writing, native to the web. 
+
+Learn more about using Distill for R Markdown at <https://rstudio.github.io/distill>.
+
+
+
+
+
