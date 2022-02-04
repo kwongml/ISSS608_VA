@@ -27,7 +27,7 @@ The *Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of 
 
 The code chunk below was used to import the necessary packages to create the visualisation.
 
-+ *plotly*: used to create interactive web-based graphs via open source JavaScript graphing library plotly.js
++ *plotly* used to create interactive web-based graphs via open source JavaScript graphing library plotly.js
 + *gganimate* package used to customise how the plot object should change with time
 + *tidyverse* collection of core packages to provide functionality to model, transform and visualise data such as ggplot2, dplyr
 + *dplyr* perform data transformation and data wrangling
@@ -160,10 +160,9 @@ paged_table(Pop_desc)
 
 We used the **gganimate** package to create an animation where we could visualise the demographic changes over time across the 10 planning areas identified.
 
-+ transition_time(): shows the changes in data over the variable Time (i.e. Year of the data).
++ transition_time(): shows the changes in data over the variable Time
 + {frame_time}: used together with labs() of ggplot2 to reflect the change in Time (year) in the title when the data changes from year to year.
-+ enter_fade() and exit_fade(): defines how new data enter and exit. fade is chosen.
-+ ease_aes(): defines how a value change to another during tweening. cubic-in-out is chosen.
++ ease_aes(): defines how a value change to another
 
 ```{r ,echo = TRUE}
 
