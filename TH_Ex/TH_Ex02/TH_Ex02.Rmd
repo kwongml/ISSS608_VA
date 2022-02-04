@@ -1,0 +1,282 @@
+---
+title: "Take-Home Exercise 2"
+description: |
+  The objective of this take-home exercise is to practice producing appropriate visualisations using animation packages in R.
+author:
+  - name: M.L. Kwong 
+    url: https://scis.smu.edu.sg/master-it-business
+    affiliation: MITB (Analytics)
+    affiliation_url: https://scis.smu.edu.sg/
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1.0 Overview
+
+In this take-home exercise, we aim to apply the appropriate interactivity and animation methods to design an age-sex pyramid using data from the Department of Statistics.
+
+The aim is to clearly show the changes of the demographic structure of Singapore by age cohort and gender between 2000-2020 at the planning area level.
+
+# 2.0 Data Import
+
+The *Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2000-2010 and Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2011-2020* datasets are used in this exercise.
+
+The code chunk below was used to import the necessary packages to create the visualisation.
+
++ *plotly*: used to create interactive web-based graphs via open source JavaScript graphing library plotly.js
++ *gganimate* package used to customise how the plot object should change with time
++ *tidyverse* collection of core packages to provide functionality to model, transform and visualise data such as ggplot2, dplyr
++ *dplyr* perform data transformation and data wrangling
+
+```{r ,echo = TRUE}
+
+packages = c('tidyverse','readxl', 'knitr', 'ggrepel','gganimate','gifski','plotly')
+for(p in packages){
+  if(!require(p,character.only = T)){
+    install.packages(p)
+  }
+  library(p,character.only = T)
+}
+
+```
+
+
+```{r ,echo = TRUE}
+
+d1 <- read_csv("data/respopagesex2000to2010.csv")
+d2 <- read_csv("data/respopagesex2011to2020.csv")
+
+```
+## 2.1 Data Wrangling
+
+The following steps were taken to further treat the data:
+
+1. Combine the two datasets d1 (for data from 2000 to 2010) and d2 (for data from 2011 to 2020) using *rbind()*.
+2. Converting the Age factor to numeric for further binning, and converting NAs to 90 for categorization to >90 at a later stage.
+3. Binning the age into the respective buckets in bins of 5 years
+4. Factorizing the new age_group variable for visualization at a later stage
+5. Converting the population count for Males to a negative scale
+6. Combining the two datasets for male and females to achieve the final treated data
+
+
+```{r ,echo = TRUE}
+
+##combining the two datasets d1 and d2
+
+combined_d1d2 <- rbind(d1,d2)
+
+##converting the age variable to numeric from string
+
+combined_d1d2$Age <- as.numeric(combined_d1d2$Age)
+combined_d1d2$Age[is.na(combined_d1d2$Age)] <- 90
+
+##binning the age variable
+
+combined_agegrouped<- combined_d1d2 %>%
+  mutate(
+    #create categories
+    age_group = dplyr::case_when(
+      Age <= 4            ~ "0-4",
+      Age > 4 & Age <= 9 ~ "5-9",
+      Age > 9 & Age <= 14 ~ "10-14",
+      Age > 14 & Age <= 19 ~ "15-19",
+      Age > 19 & Age <= 24 ~ "20-24",
+      Age > 24 & Age <= 29 ~ "25-29",
+      Age > 29 & Age <= 34 ~ "30-34",
+      Age > 34 & Age <= 39 ~ "35-39",
+      Age > 39 & Age <= 44 ~ "40-44",
+      Age > 44 & Age <= 49 ~ "45-49",
+      Age > 49 & Age <= 54 ~ "50-54",
+      Age > 54 & Age <= 59 ~ "55-59",
+      Age > 59 & Age <= 64 ~ "60-64",
+      Age > 64 & Age <= 69 ~ "65-69",
+      Age > 69 & Age <= 74 ~ "70-74",
+      Age > 74 & Age <= 79 ~ "75-79",
+      Age > 79 & Age <= 84 ~ "80-84",
+      Age > 84 & Age <= 89 ~ "85-89",
+      Age >89 ~ "90 and above"
+    )
+  )
+
+##factorizing the age variable into age_group
+
+combined_agegrouped$age_group <- factor (combined_agegrouped$age_group , levels = unique(combined_agegrouped$age_group ))
+
+##converting the males to a negative scale for the population count
+
+combined_agegrouped_males <- combined_agegrouped %>%
+  filter(`Sex` ==  "Males") %>%
+  mutate (Pop = -Pop)
+
+combined_agegrouped_females <-combined_agegrouped %>%
+  filter(`Sex` ==  "Females")
+
+##combining the data to form the final treated data
+
+df <- rbind(combined_agegrouped_males,combined_agegrouped_females)
+
+```
+
+## 2.2 Plotting the static age-sex-pyramid using ggplot()
+
+### 2.2.1 Trial 1
+
+Given the number of planning areas, we can see that the initial graph that was plotted was congested and visually unappealing. As such, we proceeded to zoom into specific planning areas of interest.
+
+The newest functionality added was the use of *facet_wrap()* to generate a age-sex pyramid across the different planning areas.
+
+```{r ,echo = TRUE, fig.width=10,fig.height=11}
+
+df %>%
+  ggplot(aes(x=age_group,y=Pop, fill=Sex)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~PA)+
+  coord_flip() 
+
+```
+### 2.2.2 Trial 2 
+
+We look into the top 10 planning areas in terms of population count as at 2020 to analyze the changes in demographic structure.
+
+From the code chunk below, we can infer that the top 10 planning areas with the highest population count was **Bukit Merah, Queenstown, Downtown Core, Ang Mo Kio, Toa Payoh, Jurong East, Hougang, Rochor, Bukit Batok and Clementi**.
+
+```{r ,echo = TRUE}
+
+Pop_desc <- combined_agegrouped %>% filter(`Time` ==  "2020") %>%
+  group_by(`PA`) %>%
+  summarize(`Pop` = n()) %>%
+  ungroup() %>% arrange(desc(Pop))
+
+library(rmarkdown)
+paged_table(Pop_desc)
+
+```
+  
+### 2.2.3 Trial 3 - Visualising and animating the top 10 planning areas in terms of population count
+
+We used the **gganimate** package to create an animation where we could visualise the demographic changes over time across the 10 planning areas identified.
+
++ transition_time(): shows the changes in data over the variable Time (i.e. Year of the data).
++ {frame_time}: used together with labs() of ggplot2 to reflect the change in Time (year) in the title when the data changes from year to year.
++ enter_fade() and exit_fade(): defines how new data enter and exit. fade is chosen.
++ ease_aes(): defines how a value change to another during tweening. cubic-in-out is chosen.
+
+```{r ,echo = TRUE}
+
+#subsetting the data to the top 10 planning areas based on 2020 data
+
+top10_2020 <- df %>% dplyr::filter(`PA` %in% c('Bukit Merah', 'Queenstown','Downtown Core','Ang Mo Kio','Toa Payoh'
+                                               ,'Jurong East', 'Hougang', 'Rochor', 'Bukit Batok', 'Clementi'))
+
+```
+
+```{r ,echo = TRUE,fig.width=15,fig.height=15}
+
+options(scipen = 999)
+library(scales)
+
+p <- ggplot(top10_2020 ,aes(x=age_group,y=Pop, fill=Sex) ) +
+  geom_col() +
+  geom_bar(stat = "identity") +
+  facet_wrap(~PA, scales = "free_x")+
+  scale_y_continuous(labels = label_number(suffix = " K", scale = 1e-3))+
+  labs (x = "Age", y = "Population", title='Singapore Age-Sex Population Pyramid', subtitle = "Year: {frame_time}") +
+  transition_time(as.integer(Time)) +
+  ease_aes('linear')+
+  coord_flip() 
+
+p
+
+```
+### 2.2.3.1 INSIGHTS FROM VISUALISATION
+
+Based on the animation, we can tell that from 2000 to 2020, the population in Singapore was generally getting older as can be seen from a narrowing bottom at the pyramid. 
+
+# 3.0 Use of ggplotly()
+
+To zoom in closer to the changes in demographic proportions, ggplotly() was used to create subplots.
+
+```{r ,echo = TRUE,fig.width=13,fig.height=13}
+
+JE_2000 <- df %>% filter(`Time` ==  "2000" & `PA` ==  "Jurong East")
+JE_2005 <- df %>% filter(`Time` ==  "2005" & `PA` ==  "Jurong East")
+JE_2010 <- df %>% filter(`Time` ==  "2010" & `PA` ==  "Jurong East")
+JE_2015 <- df %>% filter(`Time` ==  "2015" & `PA` ==  "Jurong East")
+JE_2020 <- df %>% filter(`Time` ==  "2020" & `PA` ==  "Jurong East")
+
+gif_2020 <- ggplot(JE_2020 ,aes(x=age_group,y=Pop, fill=Sex) ) +
+  geom_col() +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = label_number(suffix = " K", scale = 1e-3))+
+  labs (x = "Age", y = "Population")+
+  coord_flip() 
+
+gif_2015 <- ggplot(JE_2015 ,aes(x=age_group,y=Pop, fill=Sex) ) +
+  geom_col() +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = label_number(suffix = " K", scale = 1e-3))+
+  labs (x = "Age", y = "Population")+
+  coord_flip() 
+
+
+gif_2010 <- ggplot(JE_2010 ,aes(x=age_group,y=Pop, fill=Sex) ) +
+  geom_col() +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = label_number(suffix = " K", scale = 1e-3))+
+  labs (x = "Age", y = "Population")+
+  coord_flip() 
+
+gif_2005 <- ggplot(JE_2005 ,aes(x=age_group,y=Pop, fill=Sex) ) +
+  geom_col() +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = label_number(suffix = " K", scale = 1e-3))+
+  labs (x = "Age", y = "Population")+
+  coord_flip() 
+
+gif_2000 <- ggplot(JE_2000 ,aes(x=age_group,y=Pop, fill=Sex) ) +
+  geom_col() +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = label_number(suffix = " K", scale = 1e-3))+
+  labs (x = "Age", y = "Population", title='Singapore Age-Sex Population Pyramid from 2000 to 2020')+
+  coord_flip() 
+
+fig<- subplot(ggplotly(gif_2000),
+        ggplotly(gif_2005),
+        ggplotly(gif_2010),
+        ggplotly(gif_2015),
+        ggplotly(gif_2020))
+
+fig
+
+```
+
+## 3.1 INSIGHTS
+
+From the subplots, we can gather that in Jurong East planning zone, the population was getting older as can be seen from narrowing bottom of the pyramid over the 5 year intervals suggesting an ageing population.
+
+
+# 4.0 Conclusion
+
+The general insights were somewhat similar across planning areas where we saw that from 2000 to 2020, there were declining birth rates and an ageing population as can be seen from the change in shape of the age-sex pyramid.
+
+## 4.1 gganimate() vs subplots by plotly()
+
+The use of subplots proved to be challenging given that it was difficult to add aesthetic labelling. That said subplots allowed for a deeper dive into the different changes within different time intervals and allows for multiple **ggplotly** graphs to be stacked beside one another, highlighting the differences in demographics more clearly.
+
+**gganimate()** however allows for a cleaner visual animation of the changes over time, and aesthetic labelling is much easier as compared to subplots where the axes tend to overlap against one another.
+
+## 4.2 Tableau vs. R
+
++ It is easier to create animations within Tableau with its drag-and-drop functionality, and click-UI interface. R however is much more tedious but allows for reproducibility especially when datasets change.
++ R allows for more customisation (e.g. the use of scales = "free_y" allows for each individual facet to take on its own axes scaling.
++ R also allows for auto scaling as compared to Tableau which is much more clunky and requires manual layout configuration changes to align the axes.
+
+
+
+
+
+
