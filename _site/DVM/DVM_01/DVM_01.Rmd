@@ -44,6 +44,51 @@ The original visualisation was created using data from the Department of Statist
 
 The image below shows an initial sketch of the proposed design.
 
+![](images/ProposedSketch.png)
+**Advantages of Proposed Design:**
+
+**a) Clear Titles (Main, Chart Titles, and Sub-Titles)**
+
+* Main title reflects what the entire dashboard aims to present (i.e. an analysis/charts pertaining to Singapore's Labour Force Participation Rate and Distribution by Age Bands (2010 - 2021))
+
+* Chart titles highlight and signpost key insights and takeaway from each chart, with accompanying subtitles to highlight the specific insight in greater detail. Figure labels to indicate the general data visualised.
+
+**b) Removal of additional age bands "75 & Over" and "70 to 74"**
+
+* This presents a less misleading visual as compared to the original which had 3 bands which overlapped (i.e. "75 & Over", "70 to 74" and "70 and over")
+
+**c) Re-ordered Age bands in increasing order**
+
+* Since the chart aims to present the changes in LFPR and distribution of workforce over time between age groups, it would be more ideal to present the order of the age bands in increasing order as suggested in the sketch, as opposed to the current visual which seems to have randomly ordered it.
+
+**d) Concisely labelled y-axis**
+
+* The original visualisation used the "lfpr" acronym which may not be intuitive to viewers. The suggested sketch clearly spells out the full acronym "Labour Force Participation Rate (LFPR%)" which is more explicit, as well as presents the unit of measurement (%) to eliminate any ambiguity.
+
+**e) Unclear time frame from the x-axis which had year repeated**
+
+* The original sketch seemed to suggest the data was from 2015. With clearer signposting through the chart titles, it would be clearer that the data is from 2010 to 2021.
+
+**f) Alternative sources of data to complement existing LFPR data**
+
+* The second chart on the labour force distribution aims to complement the existing chart on LFPR by painting a picture of an ageing workforce which ties in nicely with the increasing labour force participation rate amongst the older age-group vs. a decline in LFPR in the younger age group.
+
+**g) Annotations to highlight key insights and takeaways**
+
+* The proposed sketches aims to include more annotations to highlight key trends within each age group to grab the viewer's attention upon first glance.
+
+**h) Citing of Source**
+
+* The proposed sketch also indicates the source of the data for LFPR and the workforce distribution from the Department of Statistics to allow viewers to access the source data for themselves. 
+
+**i) Inclusion of trendlines on top of the area chart**
+
+* The inclusion of trendlines alongside the annotation (to showcase the overall change in % points) highlights the general trend within each age-band across the different age-groups.
+
+**j) Better use of colours i.e. single tone**
+
+* The use of colours in the original visualisation could have been made more purposeful rather than haphazardly selecting colours which do not complement one another. In the proposed sketch, a single colour could be used but of increasing opacity (i.e. light to dark) to intuitively suggest to viewers about the increasing order of the age bands.
+
 # 3.0 Proposed Visualisation on Tableau
 
 The final proposed visualisation created using *Tableau Desktop* can be accessed via *Tableau Public* [**here**](https://public.tableau.com/app/profile/mei.lin.kwong/viz/DatavizMakeover1_16447277207830/DataVizM1).
@@ -56,16 +101,16 @@ The final proposed visualisation created using *Tableau Desktop* can be accessed
 
 | No        | Instructions           | Action  |
 |:--- |:-----------------|:------------------------------------------------------------------|
-|**1** |Open csv file *mrsd_29_Res_LFPR_28Jan2022.xlsx* downloaded from DOS website in **Microsoft Excel**. Delete sheet named "mrsd_Res_LFPR_1". |![](images/Preparation/S1.png){width=800px}|
-|**2** |Remove unnecessary columns (Columns B to V). Select Columns > Right-click > Delete columns. |![](images/Preparation/S2.png){width=800px}|
-|**3** |Remove unnecessary rows (Rows 1-2, and Rows 17 onwards). Select Rows > Right-click > Delete rows. |![](images/Preparation/S3.png){width=800px}|
-|**4** |Rename header from "Age (Years)/Sex" to "Age Bands" and save this as *mrsd_29_Res_LFPR_28Jan2022_cleaned.xlsx*. |![](images/Preparation/S4.png){width=800px}|
-|**5** |Repeat steps 1 to 4 for the second dataset *mrsd_20_Res_labour_force_by_age_sex_28Jan2022.xlsx* and save the cleaned sheet as *mrsd_20_Res_labour_force_by_age_sex_28Jan2022_cleaned.xlsx* |![](images/Preparation/S5.png){width=800px}|
-|**6** |Drag the file *mrsd_20_Res_labour_force_by_age_sex_28Jan2022_cleaned.xlsx* to Tableau Desktop. 1) check "Cleaned with Data Interpreter" 2) Select all year columns from 2010 to Total 3) Right click > Pivot |![](images/Preparation/S6.png){width=800px}|
-|**7** |1) Right click the symbol as shown on the image and change data type to "Date" 2) Click Data > Export Data to CSV > Res Labour Force by Age & Sex|![](images/Preparation/S7.png){width=800px}|
+|**1** |Open csv file *mrsd_29_Res_LFPR_28Jan2022.xlsx* downloaded from DOS website in **Microsoft Excel**. Delete sheet named "mrsd_Res_LFPR_1". |![](images/Preparation/S1.png){width=600px}|
+|**2** |Remove unnecessary columns (Columns B to V). Select Columns > Right-click > Delete columns. |![](images/Preparation/S2.png){width=600px}|
+|**3** |Remove unnecessary rows (Rows 1-2, and Rows 17 onwards). Select Rows > Right-click > Delete rows. |![](images/Preparation/S3.png){width=600px}|
+|**4** |Rename header from "Age (Years)/Sex" to "Age Bands" and save this as *mrsd_29_Res_LFPR_28Jan2022_cleaned.xlsx*. |![](images/Preparation/S4.png){width=600px}|
+|**5** |Repeat steps 1 to 4 for the second dataset *mrsd_20_Res_labour_force_by_age_sex_28Jan2022.xlsx* and save the cleaned sheet as *mrsd_20_Res_labour_force_by_age_sex_28Jan2022_cleaned.xlsx* |![](images/Preparation/S5.png){width=600px}|
+|**6** |Drag the file *mrsd_20_Res_labour_force_by_age_sex_28Jan2022_cleaned.xlsx* to Tableau Desktop. 1) check "Cleaned with Data Interpreter" 2) Select all year columns from 2010 to Total 3) Right click > Pivot |![](images/Preparation/S6.png){width=600px}|
+|**7** |1) Right click the symbol as shown on the image and change data type to "Date" 2) Click Data > Export Data to CSV > Res Labour Force by Age & Sex|![](images/Preparation/S7.png){width=600px}|
 |**8** |Repeat steps 6 and 7 for the second xlsx *mrsd_29_Res_LFPR_28Jan2022_cleaned.xlsx*.|![](images/Preparation/S8.png){width=800px}|
-|**9** |Rename the csv containing the Labour Force Participation Rate as *LFPR_Percentage.csv* and the csv containing the absolute labour force figures as *LFP_Absolute_Figures.csv*.|![](images/Preparation/S9.png){width=800px}|
-|**10** |Open up both csv files side by side > Copy column C from *LFP_Absolute_Figures.csv* and paste into column D in *LFPR_Percentage.csv* > Save final csv as *LFP_Combined.csv*. |![](images/Preparation/S10.png){width=800px}|
+|**9** |Rename the csv containing the Labour Force Participation Rate as *LFPR_Percentage.csv* and the csv containing the absolute labour force figures as *LFP_Absolute_Figures.csv*.|![](images/Preparation/S9.png){width=600px}|
+|**10** |Open up both csv files side by side > Copy column C from *LFP_Absolute_Figures.csv* and paste into column D in *LFPR_Percentage.csv* > Save final csv as *LFP_Combined.csv*. |![](images/Preparation/S10.png){width=600px}|
 |**11** |Your final csv file should look something like this. |![](images/Preparation/S11.png){width=400px}|
 
 ## 4.2 Data Visualisation
