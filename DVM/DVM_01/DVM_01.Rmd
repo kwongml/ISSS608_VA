@@ -121,13 +121,6 @@ The final proposed visualisation created using *Tableau Desktop* can be accessed
 
 1. Generally, the labour workforce in Singapore is getting older. The proportion of **workers aged 55-64** has *increased* from 13.5% to 17.6% (+4.1%) from 2010 to 2021, compared to the *decline* from 73.7% to 66.8% (-6.9%) observed amongst the **25-54 age group**.
 
-<center> --End of Dataviz Makeover 1-- </center>
-
-Distill is a publication format for scientific and technical writing, native to the web. 
-
-Learn more about using Distill for R Markdown at <https://rstudio.github.io/distill>.
-
-
-
+<center> **--End of Dataviz Makeover 1--** </center>
 
 
