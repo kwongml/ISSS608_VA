@@ -70,7 +70,58 @@ The final proposed visualisation created using *Tableau Desktop* can be accessed
 
 ## 4.2 Data Visualisation
 
+**LFPR(%) Sheet**
 
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Drag the csv *LFPR_Percentage.csv* into Tableau. |![](images/Data Visualisation/V1.png){width=400px}|
+|**2** |Create sheet with 1st Visualisation - LFPR (%) |![](images/Data Visualisation/V2.png){width=400px}|
+|**3** |Drag the variable names accordingly into the column and rows as shown in the image. Drag the Year and Age Bands variable into filter. Right click on the Age Bands under "Filter" and uncheck "Total". Next, drag "Age Bands" variable to "Colour".|![](images/Data Visualisation/V3.png){width=400px}|
+|**4** |Click the "Colour" button > "Edit Colors" > In the pop out, select "Orange" under Color palette and assign the palette to the age-bands > Click Ok|![](images/Data Visualisation/V4.png){width=400px}|
+|**5** |Right click on any part of the graph > Trend Lines > Show Trend Lines|![](images/Data Visualisation/V5.png){width=400px}|
+|**6** |Right click on the trend line > Format > Change the colour of the line|![](images/Data Visualisation/V6.png){width=400px}|
+|**7** |Right click on x-axis Lfpr > Edit Axis > Change the Axis title to "Labour Force Partitipcation Rate (LFPR%)|![](images/Data Visualisation/V7.png){width=400px}|
+|**8** |Right Click on title > Edit Title > Edit Text Accordingly <Tableau Bold - size 13> More Singaporeans across all age groups work from 2010 - 2021 with the exception of those aged 20-24. <Tableau Light - size 9> "The increase in Labour..... at 20%" and italicised with underline for the Figure text|![](images/Data Visualisation/V8.png){width=400px}|
+|**9** |Adding Annotations to mark insights: For boxes > Right Click on the point which you wish to mark > Annotate > Point > Step 2: Edit the Text > Step 3: Right Click the annotation > Step 4: Format annotation to include border and arrow > Repeat these steps for the other box annotations |![](images/Data Visualisation/V9.png){width=400px}|
+|**10** |Adding Annotations for change in percentage: For the annotations for trend lines (i.e. change in LFPR over the years): Do the same as in step 9, except Annotate > Area > and under format select "None" for line and shading. For coloured text > edit colour when editing text |![](images/Data Visualisation/V10.png){width=400px}|
+
+**Labour Share Sheet**
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Create sheet with 2nd Visualisation - Labour Share |![](images/Data Visualisation/V11.png){width=400px}|
+|**2** |Create new Age band group: Right click [Age band] > Create > Group. Group the bands according to the image |![](images/Data Visualisation/V12.png){width=400px}|
+|**3** |Drag [Age Band] to the filter as in the above section and uncheck Total |![](images/Data Visualisation/V3.png){width=400px}|
+|**4** |Create stacked bar chart by dragging the variables according to the image on the right> Right click on sum(Labour force) and click quick table calculation > Percent of Total, then Right click again > Compute using > Age bands |![](images/Data Visualisation/V14.png){width=400px}|
+|**5** |Drag [Age Bands] to Color and using the same steps as per the previous sheet > Assign the orange palette to the individual bands. Next, drag Labour force to "Label" > Click on Label > Select "Selected" under "Marks to Label" > Right click on the individual segments of the stacked bars for 2010 and 2021 and click "Mark Label" > "Always Show"|![](images/Data Visualisation/V15.png){width=400px}|
+|**6** |Change the x-axis text by right clicking on the x-axis > Edit Axis > Change axis title to "Total share of labour force"|![](images/Data Visualisation/V16.png){width=400px}|
+|**7** |Right click on the title > Edit Title > Edit title text as per image |![](images/Data Visualisation/V17.png){width=400px}|
+
+**Creation of Dashboard**
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Drag "LFPR(%)" sheet to the dashboard, followed by the "Labour Share" Sheet below > Remove the legends for Range of Year and Age Bands|![](images/Data Visualisation/V18.png){width=400px}|
+|**2** |Drag a text object to the top of the dashboard (Objects > Text), and edit the text as shown in the image > To achieve the black background: Go to Layout > Background > Select colour |![](images/Data Visualisation/V19.png){width=400px}|
+|**3** |Source text: Drag a text object to the bottom > Edit text as per image > size 8 font, Tableau Book font for normal text, and Tableau Bold for bolded text |![](images/Data Visualisation/V20.png){width=800px}|
+
+# 5.0 Major Observations
+
+## 5.1 Labour Force Participation Rate in Singapore (2010 - 2021)
+
+1. Generally, more Singaporeans across all age groups worked from 2010 to 2021 with the exception of those within the age group of 20 - 24.
+
+2. Particularly, the **20 - 24 age group** saw a decline in Labour Force Participation Rate (LFPR) of -3.4%. According to MOM, this decline in overall labour force participation was because of an increase in youths pursuing higher education [(Ministry of Manpower, 2011)](https://stats.mom.gov.sg/iMAS_PdfLibrary/mrsd-youths-in-the-labour-market-09Nov11.pdf).
+
+3. The **20 - 24 age group** experienced a sharp decline in LFPR of -5% in 2020 but bounced back in 2021. According to a report by MOM in 2021, this was due to youths aged 15 to 24 *experiencing the largest decrease in employment rate among all age groups, reflecting the employment contraction in sectors where they commonly worked such as Food & Beverage Services, Administrative & Support Services and Retail Trade*. [(Para 2.1: Ministry of Manpower, 2021)](https://stats.mom.gov.sg/iMAS_PdfLibrary/mrsd_2020LabourForce_survey_findings.pdf)
+
+4. The steepest increase in LFPR was noted for the **65-69 age group** at **+20.0%**. This group saw an increase in LFPR despite the presence of COVID-19. According to a report by MOM in 2021, this was due to the *sustained efforts to raise the employability of older workers and higher demand for essential services like cleaning and security amid the COVID-19 outbreak*.[(Para 2.3: Ministry of Manpower, 2021)](https://stats.mom.gov.sg/iMAS_PdfLibrary/mrsd_2020LabourForce_survey_findings.pdf)
+
+## 5.2 Labour Force Distribution in Singapore (2010 - 2021)
+
+1. Generally, the labour workforce in Singapore is getting older. The proportion of **workers aged 55-64** has *increased* from 13.5% to 17.6% (+4.1%) from 2010 to 2021, compared to the *decline* from 73.7% to 66.8% (-6.9%) observed amongst the **25-54 age group**.
+
+<center> --End of Dataviz Makeover 1-- </center>
 
 Distill is a publication format for scientific and technical writing, native to the web. 
 
