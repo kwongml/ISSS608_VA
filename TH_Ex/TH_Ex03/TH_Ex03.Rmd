@@ -164,7 +164,8 @@ ggplot(avg_percent_top15) +
            alpha=1) +
   xlab("Company Location") +
   ylab("Average Cocoa Percentage (%)") +
-  ggtitle("Standard error of mean cocoa percentage of top 15 companies (based on frequency)") + 
+  ggtitle("Standard error of mean cocoa percentage of top 15 companies 
+  (based on frequency)") + 
   scale_x_discrete(guide = guide_axis(n.dodge = 2))
 
 ```
@@ -240,7 +241,7 @@ p2 <-ggplot(d) +
   ylab("Average Cocoa Percentage (%)") +
   theme(axis.text.x = element_text(angle = 45, size = 10)) +
   ggtitle("Standard error of mean cocoa percentage of top 15 companies 
-          (based on frequency)") 
+  (based on frequency)") 
 
 gg1 <- ggplotly(p1)
 gg2 <- ggplotly(p2)
