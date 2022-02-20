@@ -162,27 +162,28 @@ ggplot(avg_percent_top15) +
 
 ## 4.3 Combining the Two Graphs Using plotly and crosstalk() method
 
-1. We attempt to create an interactive plot to directly compare the two plots to identify trends
+We attempt to create an interactive plot to directly compare the two plots to identify trends.
+
+The code chunk below does a left join of the two datasets *avg_rating_top15* and *avg_percent_top15* to create single dataset for the creation of the visualisation. The merge() functiionality is used.
 
 
 ```{r ,echo = TRUE}
 
 ##combining the two datasets
 
-forggplot <- merge(x=avg_rating_top15, y = avg_percent_top15, by = "company_location", all.x =TRUE)
+forggplotly <- merge(x=avg_rating_top15, y = avg_percent_top15, by = "company_location", all.x =TRUE)
 
 ```
 
 
 ### 4.3.1 Challenges Faced
 
-1. Overlapping x-axis labels
-2. 
+1. Overlapping x-axis labels which is manually augmented using *"theme(axis.text.x = element_text(angle = 45, size = 10))"*
 
 ```{r ,echo = TRUE}
 
 
-d <- highlight_key(forggplot)
+d <- highlight_key(forggplotly)
 
 #rating (x), percent (y)
 
@@ -204,7 +205,7 @@ p1<- ggplot(d) +
            alpha=1) +
   xlab("Company Location") +
   ylab("Average Rating") +
-  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) +
+  theme(axis.text.x = element_text(angle = 45, size = 10)) +
   ggtitle("Standard error of mean rating of top 15 companies (based on frequency)")  
 
 p2 <-ggplot(d) +
@@ -225,8 +226,9 @@ p2 <-ggplot(d) +
            alpha=1) +
   xlab("Company Location") +
   ylab("Average Cocoa Percentage (%)") +
-  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) +
-  ggtitle("Standard error of mean cocoa percentage of top 15 companies (based on frequency)") 
+  theme(axis.text.x = element_text(angle = 45, size = 10)) +
+  ggtitle("Standard error of mean cocoa percentage of top 15 companies 
+          (based on frequency)") 
 
 gg1 <- ggplotly(p1)
 gg2 <- ggplotly(p2)
