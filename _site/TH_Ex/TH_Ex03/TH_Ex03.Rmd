@@ -8,7 +8,9 @@ author:
     affiliation: MITB (Analytics)
     affiliation_url: https://scis.smu.edu.sg/
 date: "`r Sys.Date()`"
-output: distill::distill_article
+output: 
+  distill::distill_article:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
@@ -17,18 +19,23 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # 1.0 Overview
 
-In this take-home exercise, we aim to apply the appropriate data visualisation techniques to create a data visualisation showing the average rating and proportion cocoa percent (% chocolate) great than or equal to 70% by top 15 company location through **the use of ggplot2 methods**.
+<center>![](images/chocolate.jpg){width=40%}</center>
+
+In this take-home exercise, we aim to apply the appropriate data visualisation techniques to create a data visualisation showing the average rating and proportion cocoa percent (% chocolate) greater than or equal to 70% by top 15 company location through **the use of ggplot2 methods**.
 
 # 2.0 Data Import
 
 The [chocolate.csv](data/chocolate.csv) was used to show the average rating and proportion of cocoa percent (% chocolate) greater or equal to 70% by top 15 company location.
 
-The code chunk below was used to import the necessary packages to create the visualisation.
+The code chunk below was used to import the necessary packages to create the visualisation:
+
+* **tidyverse**: contains the crucial packages such as ggplot2, dplyr, readr to help create graphics, manipulate data, and import csv files respective
+* **plotly**: used to create interactive graphs
+* **crosstalk**: add-on to htmlwidgets to allow for linkedbrushing
 
 ```{r ,echo = TRUE}
 
-packages = c('ggstatsplot', 'ggside', 'knitr',
-             'tidyverse', 'broom', 'ggdist', 'dplyr','plotly','DT','crosstalk')
+packages = c('tidyverse','plotly','crosstalk')
 for (p in packages){
   if(!require(p, character.only = T)){
     install.packages(p)
@@ -57,7 +64,7 @@ chocodf <- choco %>% select(company_location, rating, cocoa_percent)
 chocodf$rating <- as.numeric(chocodf$rating)
 
 ```
-# 3.1 Average Rating
+### 3.1 Average Rating
 
 1. Creating *avg_rating* through grouping of data by company location, summarizing the data to get the frequency count, mean and standard deviation
 2. Passing through the output using "%>%" and use of "mutate" to create a new variable **standard error** *(SE = standard deviation / sqrt(n - 1))*
@@ -78,15 +85,13 @@ avg_rating_top15 <- avg_rating %>% arrange(desc(n)) %>% slice(1:15)
 
 ```
 
-# 3.2 Cocoa Percentage (%)
+### 3.2 Cocoa Percentage (%)
 
 1. Filter dataset with cocoa percentages < 70%
 2. Create *avg_percent* through grouping of data by company location, summarizing the data to get the frequency count, mean and standard deviation
 3. Passing through the output using "%>%" and use of "mutate" to create a new variable **standard error** *(SE = standard deviation / sqrt(n - 1))*
 3. Order the final dataset by top 15 company frequencies
 
-
-proportion cocoa percent (% chocolate)
 
 ```{r ,echo = TRUE}
 
@@ -107,7 +112,11 @@ avg_percent_top15 <- avg_percent %>% arrange(desc(n)) %>% slice(1:15)
 
 # 4.0 Creating the Visualisation
 
-## 4.1 Average Rating by Top 15 Companies (According to Frequency)
+* The initial visualisation which is outlined in the code chunk in 4.1 and 4.2 was created using ggplot() using a combination of geom_errorbar() and geom_point().
+
+* scale_x_discrete() was used to prevent the x-axis labels from overlapping.
+
+### 4.1 Average Rating by Top 15 Companies (According to Frequency)
 
 ```{r ,echo = TRUE}
 
@@ -133,7 +142,7 @@ ggplot(avg_rating_top15) +
   scale_x_discrete(guide = guide_axis(n.dodge = 2))
 
 ```
-## 4.2 Average Cocoa Percentage by Top 15 Companies (According to Frequency)
+### 4.2 Average Cocoa Percentage by Top 15 Companies (According to Frequency)
 
 ```{r ,echo = TRUE}
 
@@ -160,11 +169,13 @@ ggplot(avg_percent_top15) +
 
 ```
 
-## 4.3 Combining the Two Graphs Using plotly and crosstalk() method
+### 4.3 Combining the Two Graphs Using plotly and crosstalk() method
 
 We attempt to create an interactive plot to directly compare the two plots to identify trends.
 
 The code chunk below does a left join of the two datasets *avg_rating_top15* and *avg_percent_top15* to create single dataset for the creation of the visualisation. The merge() functiionality is used.
+
+Subsequently, the crosstalk method was used to link two of the graphs together.
 
 
 ```{r ,echo = TRUE}
@@ -179,6 +190,7 @@ forggplotly <- merge(x=avg_rating_top15, y = avg_percent_top15, by = "company_lo
 ### 4.3.1 Challenges Faced
 
 1. Overlapping x-axis labels which is manually augmented using *"theme(axis.text.x = element_text(angle = 45, size = 10))"*
+2. Initially, we had tried to use subplots, however this meant that there was less flexibility in having two different plot titles. As such, the crosstalk method was more appropriate, using the manual theme configuration code to apply an angle on the x-axis labels.
 
 ```{r ,echo = TRUE}
 
@@ -234,9 +246,34 @@ gg1 <- ggplotly(p1)
 gg2 <- ggplotly(p2)
 
 
-
 crosstalk::bscols(gg1,
                   gg2,
                   widths = 12)
 
 ```
+
+
+# 5.0 Findings
+
+**Top Company**
+
+* USA, Canada and France were the top 3 companies in terms of frequency.
+
+**Average Rating**
+
+* Australia, Denmark and Switzerland had the top 3 highest average rating for chocolate at 3.36, 3.34 and 3.32 respectively.
+* Belgium, UK and Eucuador had the lowest average rating for chocolate at 3.10, 3.07 and 3.04 respectively.
+
+**Average Cocoa Percentage (%)**
+
+* UK, Germany and Spain had the top 3 highest average cocoa percentage for chocolate at 73.8%, 73.3% and 73.2% respectively.
+* Australia, Venezuela and Denmark had the lowest 3 average cocoa percentage for chocolate at 70.2%, 70.0% and 70.0% respectively.
+
+
+# 6.0 References
+
+* [Interactive Data Visualisation with R](https://isss608-ay2021-22t2.netlify.app/hands-on_ex/hands-on_ex03/hands-on_ex03)
+* [Fundamentals of Visual Analytics](https://isss608-ay2021-22t2.netlify.app/hands-on_ex/hands-on_ex04/hands-on_ex04#1)
+* [Modifying components of a theme](https://ggplot2.tidyverse.org/reference/theme.html)
+* [Using Crosstalk](https://rstudio.github.io/crosstalk/using.html)
+
