@@ -1,0 +1,240 @@
+---
+title: "Take-Home Exercise 3"
+description: |
+  Creating a visualisation to show the average rating and proportion of cocoa percent (% chocolate) greater than or equal to 70% by top 15 company location.
+author:
+  - name: M.L. Kwong 
+    url: https://scis.smu.edu.sg/master-it-business
+    affiliation: MITB (Analytics)
+    affiliation_url: https://scis.smu.edu.sg/
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# 1.0 Overview
+
+In this take-home exercise, we aim to apply the appropriate data visualisation techniques to create a data visualisation showing the average rating and proportion cocoa percent (% chocolate) great than or equal to 70% by top 15 company location through **the use of ggplot2 methods**.
+
+# 2.0 Data Import
+
+The [chocolate.csv](data/chocolate.csv) was used to show the average rating and proportion of cocoa percent (% chocolate) greater or equal to 70% by top 15 company location.
+
+The code chunk below was used to import the necessary packages to create the visualisation.
+
+```{r ,echo = TRUE}
+
+packages = c('ggstatsplot', 'ggside', 'knitr',
+             'tidyverse', 'broom', 'ggdist', 'dplyr','plotly','DT','crosstalk')
+for (p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+}
+
+```
+
+# 3.0 Data Preparation
+
+**Step 1**: Isolate columns needed (i.e. *company_location, rating and cocoa_percent*)
+**Step 2**: Remove "%" from cocoa_percent and convert to numeric.
+
+```{r ,echo = TRUE}
+
+choco <- read_csv("data/chocolate.csv")
+
+choco$cocoa_percent <- gsub(pattern = "%", replacement = "", x = choco$cocoa_percent) %>% as.numeric(choco$cocoa_percent)
+
+##subsetting the isolated columns
+
+chocodf <- choco %>% select(company_location, rating, cocoa_percent)
+
+##convert rating to numeric
+
+chocodf$rating <- as.numeric(chocodf$rating)
+
+```
+# 3.1 Average Rating
+
+1. Creating *avg_rating* through grouping of data by company location, summarizing the data to get the frequency count, mean and standard deviation
+2. Passing through the output using "%>%" and use of "mutate" to create a new variable **standard error** *(SE = standard deviation / sqrt(n - 1))*
+3. Order the final dataset by top 15 company frequencies
+
+```{r ,echo = TRUE}
+
+avg_rating <- chocodf %>%
+  group_by(company_location) %>%
+  summarise(
+    n=n(),
+    mean=mean(rating),
+    sd=sd(rating)
+    ) %>%
+  mutate(se=sd/sqrt(n-1))
+
+avg_rating_top15 <- avg_rating %>% arrange(desc(n)) %>% slice(1:15)
+
+```
+
+# 3.2 Cocoa Percentage (%)
+
+1. Filter dataset with cocoa percentages < 70%
+2. Create *avg_percent* through grouping of data by company location, summarizing the data to get the frequency count, mean and standard deviation
+3. Passing through the output using "%>%" and use of "mutate" to create a new variable **standard error** *(SE = standard deviation / sqrt(n - 1))*
+3. Order the final dataset by top 15 company frequencies
+
+
+proportion cocoa percent (% chocolate)
+
+```{r ,echo = TRUE}
+
+avg_percent <- chocodf %>%
+  filter(chocodf$cocoa_percent >=0.7) %>%
+  group_by(company_location) %>%
+  summarise(
+    n=n(),
+    mean=mean(cocoa_percent),
+    sd=sd(cocoa_percent)
+    ) %>%
+  mutate(se=sd/sqrt(n-1))
+
+avg_percent_top15 <- avg_percent %>% arrange(desc(n)) %>% slice(1:15)
+
+```
+
+
+# 4.0 Creating the Visualisation
+
+## 4.1 Average Rating by Top 15 Companies (According to Frequency)
+
+```{r ,echo = TRUE}
+
+ggplot(avg_rating_top15) +
+  geom_errorbar(
+    aes(x=reorder(company_location,-n,), 
+        ymin=mean-1.98*se,
+        ymax=mean+1.98*se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    size=0.5) +
+  geom_point(aes
+           (x=company_location, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  xlab("Company Location") +
+  ylab("Average Rating") +
+  ggtitle("Standard error of mean rating of top 15 companies (based on frequency)") + 
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))
+
+```
+## 4.2 Average Cocoa Percentage by Top 15 Companies (According to Frequency)
+
+```{r ,echo = TRUE}
+
+ggplot(avg_percent_top15) +
+  geom_errorbar(
+    aes(x=reorder(company_location,-n,), 
+        ymin=mean-1.98*se,
+        ymax=mean+1.98*se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    size=0.5) +
+  geom_point(aes
+           (x=company_location, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  xlab("Company Location") +
+  ylab("Average Cocoa Percentage (%)") +
+  ggtitle("Standard error of mean cocoa percentage of top 15 companies (based on frequency)") + 
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))
+
+```
+
+## 4.3 Combining the Two Graphs Using plotly and crosstalk() method
+
+1. We attempt to create an interactive plot to directly compare the two plots to identify trends
+
+
+```{r ,echo = TRUE}
+
+##combining the two datasets
+
+forggplot <- merge(x=avg_rating_top15, y = avg_percent_top15, by = "company_location", all.x =TRUE)
+
+```
+
+
+### 4.3.1 Challenges Faced
+
+1. Overlapping x-axis labels
+2. 
+
+```{r ,echo = TRUE}
+
+
+d <- highlight_key(forggplot)
+
+#rating (x), percent (y)
+
+p1<- ggplot(d) +
+  geom_errorbar(
+    aes(x=reorder(company_location,-n.x,), 
+        ymin=mean.x-1.98*se.x,
+        ymax=mean.x+1.98*se.x), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    size=0.5) +
+  geom_point(aes
+           (x=company_location, 
+            y=mean.x), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  xlab("Company Location") +
+  ylab("Average Rating") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) +
+  ggtitle("Standard error of mean rating of top 15 companies (based on frequency)")  
+
+p2 <-ggplot(d) +
+  geom_errorbar(
+    aes(x=reorder(company_location,-n.y,), 
+        ymin=mean.y-1.98*se.y,
+        ymax=mean.y+1.98*se.y), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    size=0.5) +
+  geom_point(aes
+           (x=company_location, 
+            y=mean.y), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  xlab("Company Location") +
+  ylab("Average Cocoa Percentage (%)") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)) +
+  ggtitle("Standard error of mean cocoa percentage of top 15 companies (based on frequency)") 
+
+gg1 <- ggplotly(p1)
+gg2 <- ggplotly(p2)
+
+
+
+crosstalk::bscols(gg1,
+                  gg2,
+                  widths = 12)
+
+```

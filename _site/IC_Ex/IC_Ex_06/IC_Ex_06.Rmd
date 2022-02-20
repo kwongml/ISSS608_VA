@@ -1,0 +1,47 @@
+---
+title: "Untitled"
+description: |
+  A new article created using the Distill format.
+author:
+  - name: Nora Jones 
+    url: https://example.com/norajones
+    affiliation: Spacely Sprockets
+    affiliation_url: https://example.com/spacelysprokets
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+packages = c('scales', 'viridis', 
+             'lubridate', 'ggthemes', 
+             'gridExtra', 'tidyverse', 
+             'readxl', 'knitr',
+             'data.table')
+for (p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p,character.only = T)
+}
+```
+
+
+
+```{r}
+attacks <- read_csv("C:/Users/kwong/Documents/2022/Visual Analytics/Week 6/In-class_Ex06/In-class_Ex06/data/eventlog.csv")
+```
+```{r}
+kable(head(attacks))
+```
+Distill is a publication format for scientific and technical writing, native to the web. 
+
+Learn more about using Distill for R Markdown at <https://rstudio.github.io/distill>.
+
+
+
+
+
