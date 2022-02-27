@@ -45,7 +45,7 @@ for (p in packages) {
 
 ## 2.1 Getting the list of the Top 40 companies in Singapore by market capitalisation
 
-The data was downloaded through [companiesmarketcap.com](https://companiesmarketcap.com/)[https://companiesmarketcap.com/singapore/largest-companies-in-singapore-by-market-cap/) and saved as *top40companiesinSGbymarketcap.csv*.
+The data was downloaded through [companiesmarketcap.com](https://companiesmarketcap.com/singapore/largest-companies-in-singapore-by-market-cap/) and saved as *top40companiesinSGbymarketcap.csv*.
 
 The first 40 companies were extracted and saved as the *listof40* dataframe.
 
