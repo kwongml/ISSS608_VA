@@ -1,0 +1,169 @@
+---
+title: "Take-Home Exercise 3"
+description: |
+  
+  Create a visualisation that reveals the impact of COVID-19 on the stock prices of top 40 companies in Singapore by market capitalisation
+
+author:
+  - name: M.L. Kwong 
+    url: https://scis.smu.edu.sg/master-it-business
+    affiliation: MITB (Analytics)
+    affiliation_url: https://scis.smu.edu.sg/
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# 1.0 Overview
+
+In this take-home exercise, we will:
+
+1. Extract the historical stock price from Yahoo Finance using the tidyquant package, and extract the stock prices of the top 40 companies in Singapore by market capitalisation between 1st January 2020 - 31st December 2021.
+
+2. Use the horizon graph to prepare a visualisation showing the historical stock prices by top 40 companies based on market capitalisation (ggHoriPlot, a ggplot2 based R package for designing horizon graphs).
+
+The code chunk below shows the packages which were installed.
+
+```{r ,echo = TRUE}
+
+packages = c('tidyquant','rmarkdown','tidyr','tidyverse', 'ggHoriPlot', 'ggthemes')
+for (p in packages) {
+  if(!require(p,character.only = T)){
+    install.packages(p)
+  }
+  library(p,character.only = T)
+}
+
+```
+
+# 2.0 Getting the Data
+
+## 2.1 Getting the list of the Top 40 companies in Singapore by market capitalisation
+
+The data was downloaded through [companiesmarketcap.com](https://companiesmarketcap.com/)[https://companiesmarketcap.com/singapore/largest-companies-in-singapore-by-market-cap/) and saved as *top40companiesinSGbymarketcap.csv*.
+
+The first 40 companies were extracted and saved as the *listof40* dataframe.
+
+```{r ,echo = TRUE}
+
+top40companies <- read_csv("data/top40companiesinSGbymarketcap.csv")
+listof40<- top40companies[1:40, 3]
+
+```
+## 2.2 Retrieving the stock price data using tidyquant()
+
+We used tq_get() from the tidyquant package to retrieve the data from Yahoo Finance.
+
+For the purpose of this analysis, we will be using the closing price to observe any trends and differences between the top 40 companies.
+
+**Closing price**: cash value of the stock at the day's end
+
+```{r ,echo = TRUE}
+
+stock_data_daily <- listof40$Symbol %>%
+                tq_get(get = "stock.prices", from = "2020-01-01", to = "2021-12-31") %>%
+                select("symbol","date","close")
+
+paged_table(stock_data_daily)
+
+```
+
+
+# 3.0 Creating the Horizon Plot Visualisation
+
+Horizon plots are plots used for time-series data. It cuts the data into different bands on the y-axis and assigns a different colour to each band, with the intensity of the colour reflecting a value further away from 0.
+
+The base code was modified from the R-code used for [COVID-19 cases in Asia](https://rivasiker.github.io/ggHoriPlot/articles/examples.html).
+
+Vertical lines through the use of *geom_vline()* were included to mark the key milestones of the COVID-19 pandemic in Singapore namely:
+
+***23th January 2020 (in turquoise)**: First COVID case in Singapore
+
+***7th April 2020 (in slateblue/purple)**: Circuit Breaker measure announced by PM Lee Hsien Loong
+
+***11th September 2020 (in green)**: Pfizer-BioNTech vaccine was announced to be 90% effective against COVID
+
+
+```{r ,echo = TRUE, fig.width=10, fig.height=12}
+
+
+stock_data_daily %>%  
+  ggplot() +
+  geom_horizon(aes(date, 
+                   close), origin = 'min', horizonscale = 4) +
+  scale_fill_hcl(palette = 'RdBu') +
+  geom_vline(xintercept = as.numeric(as.Date("2020-1-23")), #covidarrivedinsingapore
+              color = "turquoise", 
+              lwd = 1)+
+   geom_vline(xintercept = as.numeric(as.Date("2020-4-7")), #circuitbreakertakeseffect
+              color = "slateblue", 
+              lwd = 1)+
+     geom_vline(xintercept = as.numeric(as.Date("2020-11-9")), #Pfizer-BioNTech vaccine 90% effective announced
+              color = "green", 
+              lwd = 1)+
+  facet_grid(symbol~.) +
+  theme_few() +
+  theme(
+    panel.spacing.y=unit(0, "lines"),
+    strip.text.y = element_text(size = 8, angle = 0, hjust = 0),
+    axis.text.x = element_text(size = 8, angle = 0, hjust = 0),
+    legend.position = 'none',
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    panel.border = element_blank(),
+    plot.title = element_text(size=15, face="bold"),
+    plot.subtitle = element_text(size=12)
+    ) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  scale_x_date(expand=c(0,0), date_breaks = "1 month", date_labels = "%b%Y") +
+  ggtitle('Closing Stock Price of Top 40 Countries in Singapore by Market Capitalisation', 
+          'Date Range: 01/01/2020 to 31/12/2021') +
+  xlab('Date')
+
+```
+
+# 4.0 Insights 
+
+Based on Horizon plot, we were able to extract valuable insights regarding the impact of COVID on the stock prices of top companies in Singapore.
+
+* Upon the announcement of the first case of COVID-19 in Singapore on *23rd January 2020*, closing stock prices of companies generally fell though still remaining within the higher interval (blue range).
+
+* Stock-prices continued to fall but fell most sharply around *mid March 2020* when community cases started to increase significantly where stock prices of nearly all companies fell to the lowest interval.
+
+* The stock-prices continued to worsen upon the announcement of tightened measures (i.e. circuit breaker) from *April 2020*. Interestingly, while many companies suffered the effects, we see that companies such as *A17U.SI (Ascendas Reit)*,  *CJLU.SI (NetLink Trust)* and *M44U.SI (Mapletree Logistics Trust)* recovered quickly within a few months from the nosedive in stock price even before the vaccine announcement was made, with closing stock prices hovering within the blue range.
+
+* There were signs of recovery from *Nov 2020* when the Pfizer vaccine and its 90% efficacy were announced, with most company's closing share prices improving from that time point.
+
+* Companies which *performed better in 2021* despite the COVID pandemic include (with closing stock prices within the **highest intervals** in the last quarter of 2021:
+  + BUOU.SI (Frasers Logistics & Industrial Trust)
+  
+    The pandemic had no material impact on the Fraser's performance as the company claims that only the retail segment is more challenged which only represents 1.7% of its overall income [Source](https://www.businesstimes.com.sg/companies-markets/covid-19-had-no-material-impact-on-frasers-logistics-commercial-trusts-portfolio)
+  + CJLU.SI (NetLink Trust)
+  
+    This was due to the resiliency of the core fibre network infrastructure business. [Source](https://netlinknbn.listedcompany.com/newsroom/20210511_185831_CJLU_S6MMMPG4JFB8R9AD.2.pdf) )
+  + DBSDF (DBS)
+  + FLEX (Flex)
+  
+* Companies which *continue to struggle* in 2021 despite the COVID pandemic include (with closing stock prices within the **lowest intervals** in the last quarter of 2021:
+  + BN4.SI (Keppel)
+  + C07.SI (Jardine Singapore)
+  + C52.SI (ComfortDelGro)
+  + SINGF (Singapore Airlines)
+  + SNGNF (Singtel)
+
+
+# 5.0 References
+
+* [Scaling and Modeling with tidyquant](https://cran.r-project.org/web/packages/tidyquant/vignettes/TQ03-scaling-and-modeling-with-tidyquant.html)
+
+
+
+
+
+
