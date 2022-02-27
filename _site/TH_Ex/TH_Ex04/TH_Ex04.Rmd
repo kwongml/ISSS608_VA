@@ -82,11 +82,11 @@ The base code was modified from the R-code used for [COVID-19 cases in Asia](htt
 
 Vertical lines through the use of *geom_vline()* were included to mark the key milestones of the COVID-19 pandemic in Singapore namely:
 
-***23th January 2020 (in turquoise)**: First COVID case in Singapore
+* **23th January 2020 (in turquoise)**: First COVID case in Singapore
 
-***7th April 2020 (in slateblue/purple)**: Circuit Breaker measure announced by PM Lee Hsien Loong
+* **7th April 2020 (in slateblue/purple)**: Circuit Breaker measure announced by PM Lee Hsien Loong
 
-***11th September 2020 (in green)**: Pfizer-BioNTech vaccine was announced to be 90% effective against COVID
+* **11th September 2020 (in green)**: Pfizer-BioNTech vaccine was announced to be 90% effective against COVID
 
 
 ```{r ,echo = TRUE, fig.width=10, fig.height=12}

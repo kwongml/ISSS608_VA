@@ -1553,9 +1553,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>Horizon plots are plots used for time-series data. It cuts the data into different bands on the y-axis and assigns a different colour to each band, with the intensity of the colour reflecting a value further away from 0.</p>
 <p>The base code was modified from the R-code used for <a href="https://rivasiker.github.io/ggHoriPlot/articles/examples.html">COVID-19 cases in Asia</a>.</p>
 <p>Vertical lines through the use of <em>geom_vline()</em> were included to mark the key milestones of the COVID-19 pandemic in Singapore namely:</p>
-<p>*<strong>23th January 2020 (in turquoise)</strong>: First COVID case in Singapore</p>
-<p>*<strong>7th April 2020 (in slateblue/purple)</strong>: Circuit Breaker measure announced by PM Lee Hsien Loong</p>
-<p>*<strong>11th September 2020 (in green)</strong>: Pfizer-BioNTech vaccine was announced to be 90% effective against COVID</p>
+<ul>
+<li><p><strong>23th January 2020 (in turquoise)</strong>: First COVID case in Singapore</p></li>
+<li><p><strong>7th April 2020 (in slateblue/purple)</strong>: Circuit Breaker measure announced by PM Lee Hsien Loong</p></li>
+<li><p><strong>11th September 2020 (in green)</strong>: Pfizer-BioNTech vaccine was announced to be 90% effective against COVID</p></li>
+</ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class="va">stock_data_daily</span> <span class="op">%&gt;%</span>  
