@@ -62,7 +62,7 @@ The image below shows an initial sketch of the proposed design.
 
 ### 2.1 Clarity
 
-**Better of colours**: The new design assigns brown/orange to information relating to Origin subzones, and green to information relating to Destination subzones. Moreover, the various shades also help to indiciate the number of trips (with a higer intensity suggesting a higher number of trips - in relation to the geographical map, relative to other subzones.
+**Better use of colours**: The new design assigns brown/orange to information relating to Origin subzones, and green to information relating to Destination subzones. Moreover, the various shades also help to indiciate the number of trips (with a higer intensity suggesting a higher number of trips - in relation to the geographical map, relative to other subzones.
 
 **More concise titles**: Comparing with the initial visualisation where views were not clearly demarcated with vague labels like "Weekday" and "Weekend", and filters all placed on the right, the proposed visualisation helps to more clearly position the filters in a more aesthetically pleasing manner, and where appropriate, at the right chart so users are not confused by which filter applies on which chart. Titles also dynamically change in response to filters used.
 
@@ -97,5 +97,78 @@ The final proposed visualisation created using *Tableau Desktop* can be accessed
 
 ## 4.1 Data Preparation
 
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Import the csv file *origin_destination_bus_SZ_202201.csv* into Tableau. Click Connection > Add > Spatial File and import *MP14_SUBZONE_WEB_PL.shp* |![](images/DataPreparation/DP1.png){width=200px}|
+|**2** |Drag the file *MP14_SUBZONE_WEB_PL.shp* into the window to form a  connection with origin_destination_bus_SZ_202201.csv |![](images/DataPreparation/DP2.png){width=600px}|
+|**3** |Form the relationship between the two files as indicated in the image (Origin Sz = Subzone N) |![](images/DataPreparation/DP3.png){width=600px}|
+|**4** |Drag the file again into the window to form another connection with origin_destination_bus_SZ_202201.csv. You should see a connection similar to the image on the right |![](images/DataPreparation/DP4.png){width=600px}|
+|**5** |Establish a new relationship between the two files (Destination Sz = SUBZONE N(MP14 SUBZONE WEB PL.shp1)|![](images/DataPreparation/DP5.png){width=600px}|
 
+## 4.2 Data Visualisation
+
+### 4.2.1 Creation of Origin Geographical Map
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Drag **Geometry** from the panel of variables and drag it to a new sheet (Rename it Origin Geographical Map) |![](images/Geographic/GO1.png){width=200px}|
+|**2** |Rename "Origin Sz" to "Origin Subzone" and drag it as detail. Drag "Total Trips" to Colour |![](images/Geographic/GO2.png){width=400px}|
+|**3** |Click **Colour** > **Edit Colors** > Change Palette to Orange-Gold, and opacity to 70% |![](images/Geographic/GO3.png){width=400px}|
+|**4** |Convert "Time Per Hour" Measure into a Dimension. Right Click "Time Per Hour" > Convert to Dimension |![](images/Geographic/GO4.png){width=300px}|
+|**5** |Drag the relevant variable under Filters "Time Per Hour", "Day Type", "Origin Subzone" |![](images/Geographic/GO5.png){width=300px}|
+|**6** |Hover over the filter variables > click on the white triangle > show filters for "Day Type" and "Origin Subzone" |![](images/Geographic/GO6.png){width=300px}|
+|**7** |Click on the black inverted triangle on "Origin Subzone" and "Day Type" > Select Single Value (dropdown)  |![](images/Geographic/GO7.png){width=300px}|
+|**7** |Right Click Title > Edit Title > Change text to as per image. To get <Origin Subzone>, click insert > "Origin Subzone" |![](images/Geographic/GO8.png){width=300px}|
+|**7** |Format the shading of the title > Right Click Title > Format Title > Choose shading as 79%, and respective colour |![](images/Geographic/GO9.png){width=300px}|
+
+### 4.2.2 Creation of Origin Geographical Map
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Duplicate the "Origin Geographical Map" sheet and Rename it Destination Geographical Map |![](images/Geographic/GD1.png){width=200px}|
+|**2** |Rename Destination Sz as Destination Subzone ||
+|**3** |Replace the "Origin Subzone" under the details with "Destination Subzone" |![](images/Geographic/GD2.png){width=200px}|
+|**4** |Replace the "Origin Subzone" under the filters with "Destination Subzone". When pop-out prompts click ok |![](images/Geographic/GD3.png){width=200px}|
+|**5** |Change the colour > Click Colour > Edit Colours > Select "Green-Gold" |![](images/Geographic/GD4.png){width=200px}|
+|**6** |Edit title as per image - changing the dynamic parameter to <Destination Subzone> |![](images/Geographic/GD5.png){width=200px}|
+|**7** |Show Filter for "Destination Subzone" and click on the triangle > Select Single Value Dropdown |![](images/Geographic/GD6.png){width=200px}|
+|**8** |Show Filter for "Time Per Hour" (You should see a slider range appear on the right)|![](images/Geographic/GD7.png){width=200px}|
+|**8** |Right click title > Format Title > Change shading to 80% and shade of green |![](images/Geographic/GD8.png){width=200px}|
+
+
+### 4.2.3 Creation of "Geographical Overview of Trips" Dashboard
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Create dashboard and rename it "Geographical Overview of Trips" ||
+|**2** |Drag the sheets "Origin Geographical Map" and "Destination Geographical Map" into the window as shown in the image |![](images/Geographic/GDB1.png){width=200px}|
+|**3** |Right click the filters for "Origin Subzone" > Floating. Do the same for Total Trips and Destination Subzone |![](images/Geographic/GDB2.png){width=200px}|
+|**4** |Move the floating elements to the respective locations as shown in the image |![](images/Geographic/GDB3.png){width=400px}|
+|**5** |To get the legend for "Total Trips" for Destination > Hover over the destination sheet > click the triangle under the black bar > Legends > Click Color Legend |![](images/Geographic/GDB4.png){width=400px}|
+|**6** |When the legend appears > Click on the black scroll bar triangle > Floating |![](images/Geographic/GDB5.png){width=200px}|
+|**7** |Rearrange elements per the image on the right|![](images/Geographic/GDB6.png){width=400px}|
+|**7** |Drag the text object from the bottom left hand of the window, to the top (above the "Day Type" and "Time per Hour" filters > Edit text per the image|![](images/Geographic/GDB7.png){width=400px}|
+
+### 4.2.4 Creation of "Trips Generated" sheet
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Create new sheet named "Trips Generated"||
+|**2** |Convert the "Time per Hour" variable to a dimension and discrete variable|![](images/Trips Generated Sheet/TG1.png){width=400px}|
+|**3** |Drag variable "Total Trips" to rows, and "Time per Hour" to Columns, add the variables as shown in the image to filters and ensure that the "Time Per Hour" field under filers is a continuous variable|![](images/Trips Generated Sheet/TG2.png){width=400px}|
+|**4** |Show filters for all of the filters as per previous steps. Click on the black triangle for "Origin Subzone" and "Day Type" and click Single Value (dropdown). For "Time Per Hour", it should appear as a range.|![](images/Trips Generated Sheet/TG3.png){width=400px}|
+|**5** |Change the colour to orange (Colour > Click orange)|![](images/Trips Generated Sheet/TG4.png){width=400px}|
+|**6** |Right click y-axis > Edit Axis > Change title to "Total Trips from Origin Subzone"|![](images/Trips Generated Sheet/TG5.png){width=400px}|
+|**7** |Right click title > Edit Title|![](images/Trips Generated Sheet/TG6.png){width=400px}|
+|**8** |Edit Text as per image on the right (to get the dynamic Origin Sz field -> Insert >select variable)|![](images/Trips Generated Sheet/TG7.png){width=400px}|
+|**9** |Right click title > Format Title > Select Orange with 80% shading|![](images/Trips Generated Sheet/TG8.png){width=400px}|
+|**10** |Right click on y-axis > Add Reference Line > Select parameters per the image > Right click the reference line > Format > Number (Custom) > Select 0dp|![](images/Trips Generated Sheet/TG9.png){width=400px}|
+
+
+### 4.2.5 Creation of "Trips Attracted" sheet
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Duplicate "Trips Generated" sheet and rename as "Trips Attracted"|![](images/Trips Generated Sheet/TA1.png){width=400px}|
+|**2** |Replace all variables ||
 
