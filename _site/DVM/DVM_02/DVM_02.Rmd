@@ -57,6 +57,12 @@ The original visualisation was created using data from the following sources:
 
 The image below shows an initial sketch of the proposed design.
 
+**Tab 1 - Geographical Overview**
+
+![](images/Storyboard/S1.jpg)
+**Tab 2 - Trips Overview + OD Flow Analysis**
+
+![](images/Storyboard/S2.jpg)
 
 **Advantages of Proposed Design:**
 
@@ -223,3 +229,38 @@ The final proposed visualisation created using *Tableau Desktop* can be accessed
 
 
 # 5.0 Major Observations
+
+### 5.1 Weekday (7am - 9am) Morning Peak Observations
+
+The highest number of trips within a subzone from 7am to 9am on a weekday came from Tampines East.
+
+We define the morning peak to be 7am - 9am during the weekdays. Interestingly we found that the highest number of bus trips during the weekdays originated from the *TAMPINES EAST* subzone with 488,220 trips in the month of Jan 2022. 
+
+Based on the bar charts, we found that the top destination subzones from Tampines East during the morning peak were Tampines East (203,628 trips, 41.7%) and Tampines West (53,910 trips, 11%) in first and second respectively. This means that the majority of the bus trips originating from Tampines East were intra-subzone and to nearby subzones like Tampines west.
+
+![](images/Observations/P1.png){width=200px} 
+
+![](images/Observations/P2.png){width=50px} 
+
+### 5.2 Weekday (5pm - 7pm) Evening Peak observations
+
+We define the weekday evening peak to be 5-7pm during the weekdays. We found that the highest number of bus trips based on destination during the weekdays during that time were to *TAMPINES EAST (496,787 bus trips)*, *BEDOK RESERVOIR (371,482 bus trips) * and *JURONG WEST CENTRAL (344,460 bus trips)*.
+
+**Tampines East**: Majority of the trips were intra-subzone with 205,030 trips originating from Tampines East and ending at Tampines East (41.27%).
+
+**Bedok Reservoir**: Majority of the trips came from Bedok North subzone (16,276 bus trips, 25.15%) and coming in next was Kaki Bukit (11,310 bus trips, 17.48%). Unlike Tampines East, the majority of the trips ending at Bedok Reservoir during this period came were not intra subzone, but rather originating from nearby Subzones like Kaki Bukit and Bedok North.
+
+**Jurong West Central**: Similar to Tampines East, majority of the trips were intra-subzone with 86,476 (25.1%) bus trips coming from within Jurong West Central and ending within Jurong West Central.
+
+![](images/Observations/P3.png){width=200px} 
+![](images/Observations/P7.png){width=200px} 
+
+### 5.3 Weekend Leisure Time (11am - 3pm)
+
+Apart from *TAMPINES EAST*, *BEDOK RESERVOIR* and *JURONG WEST CENTRAL* subzones, it was interesting to note that ALJUNIED (114,189 bus trips) and GEYLANG EAST (114,898) subzones were also registering relatively high number of bus trips with ALJUNIED and GEYLANG EAST as their final destination.
+
+*ALJUNIED* & *GEYLANG EAST*: Majority of the origin trips for both Aljunied and Geylang East subzones as destinations were intra-subzone journeys. For Aljunied, 22,955 bus trips were intra-subzone (20.1%) and for Geylang East, 23,328 bus trips were intra-subzone (20.3%). 
+
+![](images/Observations/P10.png){width=200px} 
+
+![](images/Observations/P9.png){width=200px} 
