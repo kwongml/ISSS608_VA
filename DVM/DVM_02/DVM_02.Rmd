@@ -43,6 +43,7 @@ The original visualisation was created using data from the following sources:
 |1|**Legend**: The legend for the origin and destination subzones contain too many radio-button options and requires the user to scroll down to look for the relevant subzone of choice for both fields. A single drop-down list could be more appropriate to make the dashboard look less cluttered.|
 |2 |**Colour**: Single use of the colour blue for the barcharts for both origin and destination trips which look repetitive. One possible improvement could be to use two different colours to clearly differentiate barcharts relating to origin subzones, and destination subzones respectively to provide a visual aid for viewers.|
 |3 |**Multiple Charts in One View**: The proportions of the charts could have been better scaled or separated in multiple views (through the Story function in Tableau). Adjacency matrix could be bigger vs. the barcharts - currently the view results in the adjacency matrix looking very compressed.|
+|4 |**No labels on y-axis**: Bar-chart has no labels on the y-axis except "Weekday" and "Weekend" and users must currently infer that it refers to the total trips based on the title of the chart.|
 
 ## 1.3 Interactive Design
 
@@ -59,9 +60,28 @@ The image below shows an initial sketch of the proposed design.
 
 **Advantages of Proposed Design:**
 
-**a) Clear Titles (Main, Chart Titles, and Sub-Titles)**
+### 2.1 Clarity
 
-* Main title reflects what the entire dashboard aims to present (i.e. an analysis/charts pertaining to Singapore's Labour Force Participation Rate and Distribution by Age Bands (2010 - 2021))
+**Better of colours**: The new design assigns brown/orange to information relating to Origin subzones, and green to information relating to Destination subzones. Moreover, the various shades also help to indiciate the number of trips (with a higer intensity suggesting a higher number of trips - in relation to the geographical map, relative to other subzones.
+
+**More concise titles**: Comparing with the initial visualisation where views were not clearly demarcated with vague labels like "Weekday" and "Weekend", and filters all placed on the right, the proposed visualisation helps to more clearly position the filters in a more aesthetically pleasing manner, and where appropriate, at the right chart so users are not confused by which filter applies on which chart. Titles also dynamically change in response to filters used.
+
+**Tooltips**: Previous tooltips did not have subzone information. Current proposed visualisation will have the subzone information together with number of trips.
+
+### 2.2 Aesthetics
+
+**Cleaner layout which is easier on the eyes**: The proposed visualisation makes use of the "Story" functionality in Tableau to create multiple compartmentalised views which results in less clutter compared to the old visualisation. We will place geographical maps in the main tab, followed by the analysis at the number of trips generated/attracted by the origin/destination subzones, as well as their corresponding top destination subzones and top origin subzones respectively.
+
+**Use of colours**: Use of colours to indicate that orange is for the origin data and green is for destination data, making it less confusing for users on first viewing.
+
+**Labelling**: Where necessary, clearer labels have been used e.g. for the bar charts instead of just "Weekday" without a label on the y-axis, the proposed visualisation uses labels such as "Total Trip from Origin Subzone", and "Total Trips to Destination Subzone" to remove any ambiguity.
+
+### 2.3 Interactivity
+
+**Single Dropdown filter for origin/destination subzone**: Use of drop-down filter results in less visual clutter.
+
+**Slider filter for duration**: Use of slider filter for duration can be more intuitive for users to selecting a range, and is an added functionality from the original visualisation which did not allow viewers to drill down to a specific time frame for the data.
+
 
 # 3.0 Proposed Visualisation on Tableau
 
