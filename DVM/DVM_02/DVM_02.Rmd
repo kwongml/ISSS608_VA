@@ -208,7 +208,7 @@ The final proposed visualisation created using *Tableau Desktop* can be accessed
 |**1** |Create a new dashboard and name it "Overview of Trips"||
 |**2** |Drag the relevant sheets as per the image into the main window pane|![](images/TopDestinations/DB1.png){width=400px}|
 |**3** |Click and drag the filter tiles to the top most above space and arrange the tiles as per the image|![](images/TopDestinations/DB2.png){width=400px}|
-|**4** |Drag the text object from the bottom left hand of the window, to the top (above the "Origin Subzone, "Destination Subzone", "Day Type" and "Time Per Hour" filters > Edit text per the image|image|![](images/TopDestinations/DB3.png){width=400px}|
+|**4** |Drag the text object from the bottom left hand of the window, to the top (above the "Origin Subzone, "Destination Subzone", "Day Type" and "Time Per Hour" filters > Edit text per the image|image![](images/TopDestinations/DB3.png){width=400px}|
 
 ### 4.2.9 Creation of "Bus Trip (Origin-Destination) - Jan 2022" Story
 
@@ -219,8 +219,7 @@ The final proposed visualisation created using *Tableau Desktop* can be accessed
 |**3** |Double click on the title and centralise the text per the image |![](images/Story/S2.png){width=400px}|
 |**4** |Click "Add a caption" and edit the first tab as "GEOGRAPHICAL OVERVIEW OF BUS TRIPS" |![](images/Story/S3.png){width=400px}|
 |**5** |Drag "Overview of Trips" dashboard to beside the grey button "GEOGRAPHICAL OVERVIEW OF BUS TRIPS" to create a new tab |![](images/Story/S4.png){width=400px}|
-|**6** |Click "Add a caption" and edit the second tab as "TOTAL TRIPS +
-ORIGIN-DESTINATION FLOW" |![](images/Story/S5.png){width=400px}|
+|**6** |Click "Add a caption" and edit the second tab as "TOTAL TRIPS + ORIGIN-DESTINATION FLOW" |![](images/Story/S5.png){width=400px}|
 
 
 # 5.0 Major Observations
