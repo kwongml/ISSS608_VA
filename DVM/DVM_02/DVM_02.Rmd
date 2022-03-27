@@ -170,5 +170,57 @@ The final proposed visualisation created using *Tableau Desktop* can be accessed
 | No        | Instructions           | Action  |
 |:--- |:-----------------|:------------------------------------------------------------------|
 |**1** |Duplicate "Trips Generated" sheet and rename as "Trips Attracted"|![](images/Trips Generated Sheet/TA1.png){width=400px}|
-|**2** |Replace all variables ||
+|**2** |Replace all variables with "Origin Subzone" to "Destination Subzone"||
+|**3** |For Destination Sz filter > Show Filter |![](images/Trips Generated Sheet/TA2.png){width=100px}|
+|**4** |Convert the "Destination Sz" filter to a single value (Dropdown) - for specific instructions please refer to previous sections e.g. 4.2.2 step 7 |![](images/Trips Generated Sheet/TA3.png)|
+|**5** |Change the colour of the chart (Colour > Change to green) |![](images/Trips Generated Sheet/TA4.png)|
+|**6** |Edit title text (Right click title > Edit Title > Change text per the image) |![](images/Trips Generated Sheet/TA5.png)|
+|**7** |Right Click Title > Format Title > Change the shading to green with 80%  |![](images/Trips Generated Sheet/TA6.png){width=400px}|
+|**8** |Right Click y-axis > Edit axis > Change Axis Title text to Total Trips to Destination Subzone |![](images/Trips Generated Sheet/TA7.png){width=400px}|
 
+
+### 4.2.6 Creation of "Top Destinations by Origin" sheet
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Duplicate "Trips Generated" sheet and rename as "Top Destinations by Origin" and remove all variables from Columns and Rows||
+|**2** |Drag the Destination Subzone variable to filter > When the pop up appears > click ok|![](images/TopDestinations/O1.png){width=400px}|
+|**3** |Drag "Total Trips" to columns, and "Destination Subzone" to Rows, and "Total Trips" Under Detail|![](images/TopDestinations/O2.png){width=400px}|
+|**4** |Right click the x-axis > Remove Reference line |![](images/TopDestinations/O3.png){width=400px}|
+|**5** |Click on the multi bars beside "Total Trips" on the x-axis to sort according to descending trips |![](images/TopDestinations/O4.png){width=400px}|
+|**6** |Right click title > Edit Title > Change text as per image on the right |![](images/TopDestinations/O5.png){width=400px}|
+
+### 4.2.7 Creation of "Top Origins by Destination" sheet
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Duplicate "Trips Attracted" sheet and rename as "Top Origins by Destination" and remove all variables from Columns and Rows||
+|**2** |Drag the Origin Subzone variable to filter > When the pop up appears > click ok|![](images/TopDestinations/D1.png){width=400px}|
+|**3** |Drag "Total Trips" to columns, and "Origin Subzone" to Rows, and "Total Trips" Under Detail|![](images/TopDestinations/D2.png){width=400px}|
+|**4** |Right click the x-axis > Remove Reference line |![](images/TopDestinations/D3.png){width=400px}|
+|**5** |Click on the multi bars beside "Total Trips" on the x-axis to sort according to descending trips |![](images/TopDestinations/D4.png){width=400px}|
+|**6** |Right click title > Edit Title > Change text as per image on the right |![](images/TopDestinations/D5.png){width=400px}|
+
+### 4.2.8 Creation of "Overview of Trips" **Dashboard**
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Create a new dashboard and name it "Overview of Trips"||
+|**2** |Drag the relevant sheets as per the image into the main window pane|![](images/TopDestinations/DB1.png){width=400px}|
+|**3** |Click and drag the filter tiles to the top most above space and arrange the tiles as per the image|![](images/TopDestinations/DB2.png){width=400px}|
+|**4** |Drag the text object from the bottom left hand of the window, to the top (above the "Origin Subzone, "Destination Subzone", "Day Type" and "Time Per Hour" filters > Edit text per the image|image|![](images/TopDestinations/DB3.png){width=400px}|
+
+### 4.2.9 Creation of "Bus Trip (Origin-Destination) - Jan 2022" Story
+
+| No        | Instructions           | Action  |
+|:--- |:-----------------|:------------------------------------------------------------------|
+|**1** |Create a new story and name it "Bus Trip (Origin-Destination) - Jan 2022"||
+|**2** |Drag the "Geographical Overview of Trips" dashboard into the main window |![](images/Story/S1.png){width=400px}|
+|**3** |Double click on the title and centralise the text per the image |![](images/Story/S2.png){width=400px}|
+|**4** |Click "Add a caption" and edit the first tab as "GEOGRAPHICAL OVERVIEW OF BUS TRIPS" |![](images/Story/S3.png){width=400px}|
+|**5** |Drag "Overview of Trips" dashboard to beside the grey button "GEOGRAPHICAL OVERVIEW OF BUS TRIPS" to create a new tab |![](images/Story/S4.png){width=400px}|
+|**6** |Click "Add a caption" and edit the second tab as "TOTAL TRIPS +
+ORIGIN-DESTINATION FLOW" |![](images/Story/S5.png){width=400px}|
+
+
+# 5.0 Major Observations
